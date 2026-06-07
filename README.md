@@ -53,15 +53,19 @@ anti-bot handling — so the AIs answer like they would for a human):
 **There is no API token in this repository or in the deployed Worker.**
 
 Each visitor pastes their **own** Bright Data token in the UI. It's sent on each
-request as `Authorization: Bearer <token>`, forwarded verbatim to Bright Data by
-the Worker, and **never stored, never logged, never written to disk**. Your key,
-your credits.
+request as `Authorization: Bearer <token>`, forwarded to Bright Data by the
+Worker, and **not stored on our servers** — the Worker keeps no database and
+doesn't log the token. If you tick **"Remember in this browser"**, the token is
+saved only in your browser's `localStorage` on your device; otherwise it isn't
+persisted anywhere. Your key, your credits — each check spends a few cents of
+**your own** Bright Data balance.
 
 Why a proxy at all? Bright Data's API doesn't send CORS headers, so a browser
-can't call it directly. The Worker is a thin, stateless relay that lives on the
-same origin as the page.
+can't call it directly. The Worker is a thin, stateless relay on the same origin
+as the page, and `POST /api/check` is rate-limited per IP to prevent abuse.
 
-Get a free token at [brightdata.com](https://brightdata.com) → *Settings → API keys*.
+Create a Bright Data account at [brightdata.com](https://brightdata.com); the API
+token lives in your account settings under *API keys*.
 
 ---
 
@@ -79,9 +83,9 @@ lives in `public/index.html`; the proxy is `src/worker.js`.
 ### Try without a key
 
 Click **"See a real sample"** on the page. It loads `public/sample.json` — a
-real, unedited result for the brand *ROASPIG* and the question *"best AI tools
-for Meta media buying"*. (Spoiler: ChatGPT names Revealbot, Madgicx and Smartly,
-and never mentions ROASPIG.)
+real, unedited result for the brand *ROASPIG* and the question *"best AI ad
+creative tools in 2026"*. (Spoiler: ChatGPT lists AdCreative, Pencil and Creatify
+and Perplexity leads with Predis.ai — neither names or cites ROASPIG.)
 
 ### Raw API example
 

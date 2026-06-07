@@ -14,6 +14,18 @@
 
   "observability": {
     "enabled": true
+  },
+
+  // Per-IP rate limiting for POST /api/check (abuse protection).
+  "unsafe": {
+    "bindings": [
+      {
+        "name": "CHECK_RL",
+        "type": "ratelimit",
+        "namespace_id": "2003",
+        "simple": { "limit": 15, "period": 60 }
+      }
+    ]
   }
 
   // NOTE: There are deliberately NO secrets here.

@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Invisible to AI? — Ask ChatGPT &amp; Perplexity if they know your brand</title>
-<meta name="description" content="ChatGPT and Perplexity are the new search box. Ask them about your category and find out — live — whether they recommend you, ignore you, or cite your competitors." />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'" />
+<title>Are you invisible to AI? — ChatGPT &amp; Perplexity brand check</title>
+<meta name="description" content="Check whether ChatGPT and Perplexity name or cite your brand when buyers ask for the best tools in your category. Bring your own Bright Data key." />
 <meta property="og:title" content="Are you invisible to AI?" />
 <meta property="og:description" content="Ask ChatGPT &amp; Perplexity if they know your brand exists. Live, in real time." />
 <meta property="og:type" content="website" />
@@ -174,6 +175,8 @@
   footer .love a{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:2px}
   footer .pw{margin-top:8px;font-size:12px;color:#9a9a8f}
   footer .pw a{font-weight:700}
+  .costnote{font-size:12px;color:var(--muted);margin:9px 2px 0;line-height:1.5}
+  .disclaimer{margin:16px 4px 0;font-size:12px;color:var(--muted);text-align:center;line-height:1.5}
 
   @media(max-width:680px){
     .wrap{padding:0 15px}
@@ -202,28 +205,28 @@
   <section class="hero">
     <span class="badge kicker">Real-time · ChatGPT + Perplexity</span>
     <h1 class="title">Are you <span class="hl">invisible</span><br/>to AI?</h1>
-    <p class="sub">ChatGPT and Perplexity are the new search box. Ask them about your category and find out — live — whether they recommend you, ignore you, or <b>hand your buyers to competitors</b>.</p>
+    <p class="sub">When buyers ask ChatGPT or Perplexity for the best option in your category, each one names a few brands and cites a few pages. This checks whether <b>yours is one of them</b> — across both at once.</p>
 
     <div class="steps">
       <div class="card step">
         <div class="n" style="background:var(--accent-purple)">1</div>
         <h3>Ask like a buyer</h3>
-        <p>Type your brand and a real question your customers ask before they buy.</p>
+        <p>Your brand plus a question your customers actually type before they buy.</p>
       </div>
       <div class="card step">
         <div class="n" style="background:var(--accent-teal)">2</div>
-        <h3>We ask the AIs live</h3>
-        <p>ChatGPT &amp; Perplexity are queried in real time and every cited source is pulled.</p>
+        <h3>We run it through both</h3>
+        <p>We send the question to ChatGPT and Perplexity and capture each answer and the sources it cites.</p>
       </div>
       <div class="card step">
         <div class="n" style="background:var(--accent-yellow)">3</div>
-        <h3>Get the verdict</h3>
-        <p>Cited, mentioned, or invisible — plus the exact pages winning instead of you.</p>
+        <h3>See the result</h3>
+        <p>Named, cited, or left out on each engine — plus the pages they pulled from.</p>
       </div>
     </div>
 
     <div class="example">
-      <span class="tag">Example →</span> Brand <b>“ROASPIG”</b>, question <i>“best AI ad creative tools in 2026”</i>. ChatGPT &amp; Perplexity named AdCreative, Pencil &amp; Creatopy… and never once mentioned ROASPIG. <b>That gap is the whole game.</b>
+      <span class="tag">Example →</span> Brand <b>“ROASPIG”</b>, question <i>“best AI ad creative tools in 2026”</i>. ChatGPT listed AdCreative, Pencil and Creatify; Perplexity led with Predis.ai and AdCreative.ai — and neither named or cited ROASPIG.
     </div>
   </section>
 
@@ -251,21 +254,22 @@
 
     <div class="field">
       <label class="lab" for="prompt">The question your buyers ask AI</label>
-      <input id="prompt" class="input" placeholder="best AI tools for Meta media buying" autocomplete="off" />
+      <input id="prompt" class="input" placeholder="best AI ad creative tools in 2026" autocomplete="off" />
       <div class="chips" id="chips"></div>
     </div>
 
     <div class="field">
       <label class="lab" for="token">Your Bright Data API token</label>
       <div class="tokenrow">
-        <input id="token" class="input mono" type="password" placeholder="paste your token — used live, never stored" autocomplete="off" spellcheck="false" />
+        <input id="token" class="input mono" type="password" placeholder="paste your Bright Data token" autocomplete="off" spellcheck="false" />
         <button class="reveal" id="revealBtn" type="button" aria-label="show token">show</button>
       </div>
       <div class="keyhint">
-        <label class="remember"><input type="checkbox" id="remember" /> Remember on this device</label>
+        <label class="remember"><input type="checkbox" id="remember" /> Remember in this browser</label>
         <span>·</span>
-        <span>No token yet? <a href="https://brightdata.com/cp/zones" target="_blank" rel="noopener">Grab one free in 2 minutes →</a></span>
+        <span>No token? <a href="https://brightdata.com" target="_blank" rel="noopener">Create a Bright Data account →</a></span>
       </div>
+      <p class="costnote">Each check runs two live queries (ChatGPT + Perplexity) through <b>your own</b> Bright Data account and uses your credits (about a few cents). Your token is sent only to Bright Data — it isn’t stored on our servers. “Remember” keeps it in this browser only.</p>
     </div>
 
     <div class="actions">
@@ -283,7 +287,7 @@
     </div>
     <div class="engrow">
       <div class="eng" id="engRun-chatgpt">
-        <div class="ehead">🤖 ChatGPT <span class="muted mono" style="font-size:12px">gpt-5</span></div>
+        <div class="ehead">🤖 ChatGPT</div>
         <div class="estate"><span class="pulse"></span><span class="etext">queued…</span></div>
       </div>
       <div class="eng" id="engRun-perplexity">
@@ -292,15 +296,15 @@
       </div>
     </div>
     <div class="bar"><i id="bar"></i></div>
-    <div class="statusline" id="statusline">Spinning up live sessions… ChatGPT usually takes ~90s, Perplexity ~30s.</div>
+    <div class="statusline" id="statusline">Running live queries — Perplexity usually answers in ~30s, ChatGPT in ~60–90s.</div>
   </section>
 
   <!-- RESULTS -->
   <section class="results" id="results"></section>
 
   <footer>
-    <div class="love">Built with love by <a href="https://nofluff.online" target="_blank" rel="noopener">Yaron · nofluff.online</a></div>
-    <div class="pw">Powered by <a href="https://brightdata.com" target="_blank" rel="noopener">Bright&nbsp;Data</a> · BYOK · your token never leaves your request</div>
+    <div class="love">Built by <a href="https://nofluff.online" target="_blank" rel="noopener">Yaron · nofluff.online</a></div>
+    <div class="pw">Powered by <a href="https://brightdata.com" target="_blank" rel="noopener">Bright&nbsp;Data</a> · you bring your own key — it’s sent only to Bright Data, not stored here</div>
   </footer>
 </div>
 
@@ -327,6 +331,7 @@
   // ---------- helpers ----------
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const safeUrl = (u) => { u = String(u || "").trim(); return /^https?:\/\//i.test(u) ? u : ""; };
 
   function domainOf(s) {
     if (!s) return "";
@@ -338,55 +343,61 @@
       return String(s).replace(/^https?:\/\//i, "").replace(/^www\./, "").split("/")[0];
     }
   }
-  const answerOf = (r) => r && (r.answer_text || r.answer || r.answer_text_markdown || "") || "";
+  const hostLabels = (d) => String(d || "").toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+  function isYou(domain, brand) {
+    if (!brand) return false;
+    const b = brand.trim().toLowerCase().replace(/[^a-z0-9]+/g, "");
+    if (b.length < 3) return false;
+    const L = hostLabels(domain);
+    if (!L.length) return false;
+    const sld = L.slice(0, -1).join("");
+    return sld === b || L.some((x) => x === b);
+  }
+  const plainAnswer = (r) => r && (r.answer_text || r.answer || r.answer_text_markdown || "") || "";
+  const mdAnswer = (r) => r && (r.answer_text_markdown || r.answer_text || r.answer || "") || "";
 
   function citationsOf(rec) {
     if (!rec) return [];
     const out = [], seen = new Set();
     const push = (c) => {
       if (!c) return;
-      const url = c.url || c.link || "";
+      const raw = c.url || c.link || "";
+      const url = safeUrl(raw);
       const domain = domainOf(url) || (c.domain ? domainOf(c.domain) : "");
-      const key = (url || c.title || "").toLowerCase().trim();
+      const key = (raw || domain || c.title || "").toLowerCase().trim();
       if (!key || seen.has(key)) return;
       seen.add(key);
       out.push({ url, title: c.title || c.name || "", domain, position: out.length + 1 });
     };
     for (const arr of [rec.citations, rec.sources, rec.search_sources, rec.references, rec.links_attached]) {
-      if (Array.isArray(arr) && arr.length) { arr.forEach(push); if (out.length) break; }
+      if (Array.isArray(arr)) arr.forEach(push);
     }
     return out;
   }
 
   function brandInText(text, brand) {
     if (!brand || !text) return false;
-    const b = brand.toLowerCase().trim();
-    const t = text.toLowerCase();
+    const b = brand.trim();
     if (b.length < 2) return false;
-    if (t.includes(b)) return true;
-    const ns = b.replace(/\s+/g, "");
-    return ns.length >= 3 && t.replace(/\s+/g, "").includes(ns);
+    const pat = b.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/[\s\-]+/g, "[\\s\\-]*");
+    try { return new RegExp("(^|[^A-Za-z0-9])" + pat + "(?=[^A-Za-z0-9]|$)", "i").test(text); }
+    catch { return text.toLowerCase().includes(b.toLowerCase()); }
   }
   function brandCitedPos(cites, brand) {
     if (!brand) return null;
-    const b = brand.toLowerCase().replace(/[\s.]+/g, "");
-    if (b.length < 3) return null;
-    for (const c of cites) {
-      const hay = ((c.domain || "") + " " + (c.url || "") + " " + (c.title || "")).toLowerCase().replace(/[\s.]+/g, "");
-      if (hay.includes(b)) return c.position;
-    }
+    for (const c of cites) { if (isYou(c.domain, brand)) return c.position; }
     return null;
   }
-  function highlight(text, brand) {
-    let h = esc(text);
+  function renderAnswer(md, brand) {
+    let h = esc(md);
     if (brand && brand.trim().length >= 2) {
-      try {
-        const re = new RegExp("(" + brand.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "gi");
-        h = h.replace(re, "<mark>$1</mark>");
-      } catch {}
+      const pat = brand.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/[\s\-]+/g, "[\\s\\-]*");
+      try { h = h.replace(new RegExp("(^|[^A-Za-z0-9])(" + pat + ")(?=[^A-Za-z0-9]|$)", "gi"), (m, a, g) => a + "<mark>" + g + "</mark>"); } catch {}
     }
+    h = h.replace(/^#{1,6}\s*(.+)$/gm, "<strong>$1</strong>").replace(/\*\*([^*\n]{1,160})\*\*/g, "<strong>$1</strong>").replace(/^\s*[-*]\s+/gm, "• ").replace(/[ \t]{3,}/g, "  ").replace(/\n{2,}/g, "<br><br>").replace(/\n/g, "<br>");
     return h;
   }
+  function csvCell(x) { let s = String(x == null ? "" : x); if (/^[=+\-@\t\r]/.test(s)) s = "'" + s; return '"' + s.replace(/"/g, '""') + '"'; }
 
   // ---------- UI: errors ----------
   function showErr(msg) { const e = $("err"); e.textContent = msg; e.style.display = "block"; e.scrollIntoView({ behavior: "smooth", block: "center" }); }
@@ -426,7 +437,7 @@
     const country = $("country").value;
     const token = $("token").value.trim();
     if (!prompt) return showErr("Enter the question your buyers ask AI (e.g. “best CRM for startups”).");
-    if (!token) return showErr("Paste your Bright Data API token to run a live check. It’s used live and never stored.");
+    if (!token) return showErr("Paste your Bright Data API token. It’s sent only to Bright Data and isn’t stored on our servers.");
     persistToken();
 
     setRunning(true);
@@ -466,15 +477,17 @@
       if (!run || run.engines[eng].status !== "running") return;
       if (Date.now() - run.started > MAX_MS) return settleEngine(eng, { status: "error", error: "Timed out." });
       const { ok, data } = await api("/api/status?id=" + encodeURIComponent(sid), { headers: authHeader() });
-      const st = (data && data.status) || "running";
+      const st = ((data && data.status) || "running").toString().toLowerCase();
       if (ok && st === "ready") {
         const r = await api("/api/result?id=" + encodeURIComponent(sid), { headers: authHeader() });
         let rec = r.data;
         if (Array.isArray(rec)) rec = rec[0];
-        return settleEngine(eng, { status: "done", record: rec || {} });
+        if (!rec || typeof rec !== "object" || (!rec.answer_text && !rec.answer && !rec.citations && !rec.sources))
+          return settleEngine(eng, { status: "error", error: "No usable answer returned." });
+        return settleEngine(eng, { status: "done", record: rec });
       }
-      if (st === "failed") return settleEngine(eng, { status: "error", error: "Bright Data run failed." });
-      setEngState(eng, "running", LABEL[eng] + " is thinking… (" + st + ")");
+      if (/fail|error|abort|cancel|expire/.test(st)) return settleEngine(eng, { status: "error", error: "The run didn’t complete." });
+      setEngState(eng, "running", LABEL[eng] + " is still working…");
       run.engines[eng]._t = setTimeout(tick, POLL_MS);
     };
     run.engines[eng]._t = setTimeout(tick, 1500);
@@ -505,10 +518,10 @@
     t.textContent = text;
   }
   const STATUS_LINES = [
-    "Routing through a real browser so the AIs answer like they would for a human…",
-    "Pulling every source the model decided to trust…",
-    "Mapping the citation graph — the pages standing between you and a mention…",
-    "Checking if your name shows up… or your competitors’ …",
+    "Sending your question to ChatGPT and Perplexity through Bright Data…",
+    "Waiting for each one to write its answer…",
+    "Collecting the sources each engine cited…",
+    "Checking whether your brand shows up in either…",
   ];
   function startTimer() {
     let i = 0;
@@ -529,13 +542,12 @@
     for (const eng of ENGINES) {
       const e = run.engines[eng];
       if (e.status === "done") {
-        const ans = answerOf(e.record);
+        const ans = plainAnswer(e.record);
         const cites = citationsOf(e.record);
         per[eng] = {
-          ok: true, answer: ans, cites,
+          ok: true, answer: ans, answerMd: mdAnswer(e.record), cites,
           mentioned: brandInText(ans, brand),
           citedPos: brandCitedPos(cites, brand),
-          searched: e.record.web_search_triggered !== false && (cites.length > 0 || e.record.web_search_triggered === true),
           related: Array.isArray(e.record.related_prompts) ? e.record.related_prompts : [],
           model: e.record.model || "",
         };
@@ -560,40 +572,38 @@
     const anyMention = (per.chatgpt.ok && per.chatgpt.mentioned) || (per.perplexity.ok && per.perplexity.mentioned);
     const anyCited = (per.chatgpt.ok && per.chatgpt.citedPos) || (per.perplexity.ok && per.perplexity.citedPos);
 
-    // competitor leaderboard
+    // sources leaderboard (across both engines)
     const tally = {};
     for (const eng of ENGINES) if (per[eng].ok) for (const c of per[eng].cites) {
-      if (!c.domain) continue;
-      const isYou = brand && c.domain.toLowerCase().replace(/[\s.]+/g, "").includes(brand.toLowerCase().replace(/[\s.]+/g, "")) && brand.length >= 3;
-      if (isYou) continue;
+      if (!c.domain || isYou(c.domain, brand)) continue;
       tally[c.domain] = tally[c.domain] || { domain: c.domain, count: 0, best: 99, title: c.title };
       tally[c.domain].count++; tally[c.domain].best = Math.min(tally[c.domain].best, c.position);
     }
     const board = Object.values(tally).sort((a, b) => b.count - a.count || a.best - b.best).slice(0, 8);
 
-    let vClass = "neutral", vLabel = "Result", vH = "", vP = "";
-    if (!brand) { vClass = "neutral"; vH = "Here’s what AI says"; vP = "Add your brand name above to get a verdict on whether you’re cited."; }
-    else if (anyCited) { vClass = "good"; vH = brand + " is on the map ✓"; vP = "At least one AI cited you as a source. Now push for position #1–2 — placement decides who gets quoted."; }
-    else if (anyMention) { vClass = "mixed"; vH = "AI says your name… but cites others"; vP = brand + " is mentioned in the answer, but isn’t in the trusted sources. You’re in the conversation, not the citation graph yet."; }
-    else if (anyOk) { vClass = "bad"; vH = brand + " is invisible to AI 👻"; vP = "Across these answers, AI never named you and never cited you. The good news: the pages below are now your ranked to-do list."; }
+    let vClass = "neutral", vH = "", vP = "";
+    if (!brand) { vClass = "neutral"; vH = "Here’s what ChatGPT & Perplexity answered"; vP = "Add your brand name above to see whether either one named or cited you."; }
+    else if (anyCited) { vClass = "good"; vH = brand + " is cited by AI ✓"; vP = "At least one of ChatGPT or Perplexity cited " + brand + " as a source in this answer."; }
+    else if (anyMention) { vClass = "mixed"; vH = "AI mentioned " + brand + ", didn’t cite it"; vP = brand + " shows up in the answer text, but isn’t among the sources either engine cited."; }
+    else if (anyOk) { vClass = "bad"; vH = brand + " didn’t make the answer 👻"; vP = "In these answers, neither ChatGPT nor Perplexity named or cited " + brand + ". The pages below are where they pulled from."; }
     else { vClass = "bad"; vH = "We couldn’t complete the check"; vP = "Both engines errored — see the details below."; }
 
     const cards = ENGINES.map((eng) => engineCard(eng, per[eng], brand)).join("");
     const stats = brand && anyOk ? `
       <div class="stats">
         <div class="card stat"><div class="v">${(per.chatgpt.ok&&per.chatgpt.mentioned)||(per.perplexity.ok&&per.perplexity.mentioned)?"Yes":"No"}</div><div class="k">Named in answer</div></div>
-        <div class="card stat"><div class="v">${anyCited?("#"+Math.min(per.chatgpt.citedPos||99,per.perplexity.citedPos||99)):"—"}</div><div class="k">Your best citation</div></div>
-        <div class="card stat"><div class="v">${board.length}</div><div class="k">Competitors cited</div></div>
+        <div class="card stat"><div class="v">${anyCited?("#"+Math.min(per.chatgpt.citedPos||99,per.perplexity.citedPos||99)):"—"}</div><div class="k">Best citation</div></div>
+        <div class="card stat"><div class="v">${board.length}</div><div class="k">Other sources cited</div></div>
       </div>` : "";
 
     const boardHtml = board.length ? `
       <div class="card board">
-        <h3>Who’s winning instead 🏆</h3>
-        <p class="bsub">The domains AI trusts for “${esc(run.prompt)}”. Get listed on these pages — in slot #1–2 — and AI starts surfacing you. ${brand?"This is the borrow-authority play.":""}</p>
+        <h3>Where the AIs pulled their answers from</h3>
+        <p class="bsub">The pages ChatGPT and Perplexity cited for “${esc(run.prompt)}”. Getting featured on the ones that fit your brand is how companies tend to start showing up — there are no guarantees, and AI answers move around.</p>
         <ol class="cites">${board.map((b,i)=>`
           <li class="cite"><span class="rank">${i+1}</span>
             <div class="cmeta"><div class="cdom">${esc(b.domain)}</div>${b.title?`<div class="ctitle">${esc(b.title)}</div>`:""}</div>
-            <span class="tag2 tag-info">${b.count}× · best #${b.best}</span>
+            <span class="tag2 tag-info">${b.count}× · first #${b.best}</span>
           </li>`).join("")}</ol>
       </div>` : "";
 
@@ -605,16 +615,17 @@
         <button class="btn" id="dlCsv">⬇︎ CSV</button>
         <button class="btn btn-ghost" id="again">↻ New check</button>
       </div>` : "";
+    const disclaimer = done ? `<p class="disclaimer">AI answers change between runs, accounts and locations. This is one live snapshot of two engines — not a guaranteed or permanent result.</p>` : "";
 
     $("results").innerHTML = `
       <div class="card verdict ${vClass}">
-        <div class="vlabel">Verdict · ${esc(run.prompt)}</div>
+        <div class="vlabel">Result · ${esc(run.prompt)}</div>
         <h2>${esc(vH)}</h2><p>${esc(vP)}</p>
       </div>
       ${stats}
       ${cards}
       ${boardHtml}
-      ${exportHtml}`;
+      ${exportHtml}${disclaimer}`;
     $("results").style.display = "block";
 
     // wire up answer toggles
@@ -650,20 +661,21 @@
     }
     tags.push(`<span class="tag2 tag-info">${p.cites.length} sources</span>`);
 
-    const ans = p.answer || "(no answer returned)";
-    const long = ans.length > 320;
+    const md = p.answerMd || "(no answer returned)";
+    const long = md.length > 320;
     const citeList = p.cites.length ? `
       <div class="citehead">Sources ${LABEL[eng]} cited</div>
       <ul class="cites">${p.cites.slice(0, 10).map((c) => {
-        const you = brand && c.domain && c.domain.toLowerCase().replace(/[\s.]+/g,"").includes(brand.toLowerCase().replace(/[\s.]+/g,"")) && brand.length>=3;
+        const you = isYou(c.domain, brand);
+        const u = safeUrl(c.url);
         return `<li class="cite ${you?"you":""}"><span class="rank">${c.position}</span>
-          <div class="cmeta"><div class="cdom">${esc(c.domain || domainOf(c.url) || "source")} ${you?"— that’s you 🎉":""}</div>
+          <div class="cmeta"><div class="cdom">${esc(c.domain || domainOf(c.url) || "source")}${you?" — that’s you 🎉":""}</div>
           ${c.title?`<div class="ctitle">${esc(c.title)}</div>`:""}</div>
-          ${c.url?`<a class="open" href="${esc(c.url)}" target="_blank" rel="noopener">open ↗</a>`:""}</li>`;
+          ${u?`<a class="open" href="${esc(u)}" target="_blank" rel="noopener noreferrer">open ↗</a>`:""}</li>`;
       }).join("")}</ul>` : "";
 
     const noSearchNote = (eng === "chatgpt" && p.cites.length === 0)
-      ? `<div class="note">ChatGPT answered from memory without searching the web this time, so it returned no live citations. The “named” signal above still tells you if it knows your brand.</div>` : "";
+      ? `<div class="note">ChatGPT answered from memory without searching the web this time, so there are no live citations. The “named” signal above still shows whether it knows your brand.</div>` : "";
 
     const related = (eng === "perplexity" && p.related.length) ? `
       <div class="citehead">People also ask</div>
@@ -672,7 +684,7 @@
     return `<div class="card ecard">
       <div class="ec-top"><div class="ec-name">${ICON[eng]} ${LABEL[eng]}${p.model?` <span class="muted mono" style="font-size:12px">${esc(p.model)}</span>`:""}</div>
         <div class="ec-tags">${tags.join("")}</div></div>
-      <div class="answer">${highlight(ans, brand)}<div class="fade"></div></div>
+      <div class="answer">${renderAnswer(md, brand)}<div class="fade"></div></div>
       ${long?`<button class="moreBtn">Read full answer ↓</button>`:""}
       ${noSearchNote}
       ${citeList}
@@ -704,11 +716,12 @@
       L.push(`**Answer:** ${p.answer.replace(/\s+/g, " ").trim()}`);
       L.push(``);
       if (p.cites.length) {
-        L.push(`**Citations:**`);
-        p.cites.forEach((c) => L.push(`${c.position}. ${c.domain || domainOf(c.url)} — ${c.url}`));
+        L.push(`**Sources cited:**`);
+        p.cites.forEach((c) => L.push(`${c.position}. ${c.domain || domainOf(c.url)}${safeUrl(c.url) ? " — " + safeUrl(c.url) : ""}`));
         L.push(``);
       }
     }
+    L.push(`Note: AI answers vary between runs — this is one live snapshot.`);
     L.push(`---`);
     L.push(`Generated by invisible-to-ai · built by Yaron (nofluff.online) · powered by Bright Data`);
     return L.join("\n");
@@ -734,8 +747,8 @@
     const per = analyze();
     const rows = [["engine", "position", "domain", "url", "title"]];
     for (const eng of ENGINES) if (per[eng].ok) per[eng].cites.forEach((c) =>
-      rows.push([eng, c.position, c.domain, c.url, (c.title || "").replace(/"/g, '""')]));
-    const csv = rows.map((r) => r.map((x) => `"${String(x == null ? "" : x).replace(/"/g, '""')}"`).join(",")).join("\n");
+      rows.push([eng, c.position, c.domain, safeUrl(c.url), c.title || ""]));
+    const csv = rows.map((r) => r.map(csvCell).join(",")).join("\n");
     download(`ai-visibility-${slug()}.csv`, csv, "text/csv");
   }
 
