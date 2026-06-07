@@ -6,7 +6,7 @@
   "author": "Yaron Been (https://nofluff.online)",
   "type": "module",
   "engines": { "node": ">=18" },
-  "repository": { "type": "git", "url": "https://github.com/yaronbeen/invisible-to-ai" },
+  "repository": { "type": "git", "url": "https://github.com/yaronbeen/bright-data-invisible-to-ai" },
   "description": "Ask ChatGPT and Perplexity whether they know your brand exists. Live AI brand-visibility checker powered by Bright Data.",
   "scripts": {
     "dev": "wrangler dev",

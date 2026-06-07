@@ -15,8 +15,8 @@ you whether you were:
 - **Invisible** — with the exact list of competitor pages winning instead.
 
 > Part of a 3-tool series on AI brand visibility. See also the single-engine
-> [ChatGPT checker](https://github.com/yaronbeen/chatgpt-visibility-checker) and
-> [Perplexity checker](https://github.com/yaronbeen/perplexity-visibility-checker).
+> [ChatGPT checker](https://github.com/yaronbeen/bright-data-chatgpt-visibility-checker) and
+> [Perplexity checker](https://github.com/yaronbeen/bright-data-perplexity-visibility-checker).
 >
 > Inspired by the playbook in
 > *["My SaaS Was Invisible to ChatGPT. I Built a Scraping Pipeline to Fix It."](https://medium.com/@yaron.been/my-saas-was-invisible-to-chatgpt-i-built-a-scraping-pipeline-to-fix-it-4703bbed2345)*
@@ -62,9 +62,6 @@ Perplexity) at about **US$0.0015 per record** on Bright Data pay-as-you-go.
 Why a proxy at all? Bright Data's API doesn't send CORS headers, so a browser
 can't call it directly. The Worker is a thin, stateless relay on the same origin
 as the page; the `/api/*` endpoints are rate-limited per IP.
-
-> This is an independent project — not affiliated with or endorsed by Bright Data,
-> OpenAI, or Perplexity.
 
 Create a Bright Data account at [brightdata.com](https://brightdata.com); the API
 token lives in your account settings under *API keys*.
