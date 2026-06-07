@@ -265,11 +265,9 @@
         <button class="reveal" id="revealBtn" type="button" aria-label="show token">show</button>
       </div>
       <div class="keyhint">
-        <label class="remember"><input type="checkbox" id="remember" /> Remember in this browser</label>
-        <span>·</span>
-        <span>No token? <a href="https://brightdata.com" target="_blank" rel="noopener">Create a Bright Data account →</a></span>
+        <span>No token? <a href="https://brightdata.com" target="_blank" rel="noopener">Create a Bright Data account →</a> Bright Data is a web-data vendor; its API powers the live queries.</span>
       </div>
-      <p class="costnote">Each check runs two live queries (ChatGPT + Perplexity) through <b>your own</b> Bright Data account and uses your credits (about a few cents). Your token is sent only to Bright Data — it isn’t stored on our servers. “Remember” keeps it in this browser only.</p>
+      <p class="costnote">Each check runs two live queries (ChatGPT + Perplexity) through <b>your own</b> Bright Data account and uses your credits (roughly US$0.003 total). Your token is passed straight to Bright Data through this page and isn’t stored — not on our servers, not in your browser.</p>
     </div>
 
     <div class="actions">
@@ -304,7 +302,7 @@
 
   <footer>
     <div class="love">Built by <a href="https://nofluff.online" target="_blank" rel="noopener">Yaron · nofluff.online</a></div>
-    <div class="pw">Powered by <a href="https://brightdata.com" target="_blank" rel="noopener">Bright&nbsp;Data</a> · you bring your own key — it’s sent only to Bright Data, not stored here</div>
+    <div class="pw">Powered by <a href="https://brightdata.com" target="_blank" rel="noopener">Bright&nbsp;Data</a> · you bring your own key — passed straight to Bright Data, we store nothing</div>
   </footer>
 </div>
 
@@ -343,36 +341,55 @@
       return String(s).replace(/^https?:\/\//i, "").replace(/^www\./, "").split("/")[0];
     }
   }
-  const hostLabels = (d) => String(d || "").toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+  function registrableSld(domain) {
+    const host = String(domain || "").toLowerCase().replace(/^www\./, "");
+    const L = host.split(".").filter(Boolean);
+    if (L.length < 2) return host;
+    const two = L.slice(-2).join(".");
+    const multi = ["co.uk", "com.au", "co.jp", "co.in", "com.br", "co.nz", "co.za", "com.mx", "co.il", "org.uk", "ne.jp", "or.jp"];
+    if (multi.includes(two) && L.length >= 3) return L[L.length - 3];
+    return L[L.length - 2];
+  }
   function isYou(domain, brand) {
     if (!brand) return false;
     const b = brand.trim().toLowerCase().replace(/[^a-z0-9]+/g, "");
     if (b.length < 3) return false;
-    const L = hostLabels(domain);
-    if (!L.length) return false;
-    const sld = L.slice(0, -1).join("");
-    return sld === b || L.some((x) => x === b);
+    const host = String(domain || "").toLowerCase().replace(/^www\./, "");
+    if (!host) return false;
+    const sld = registrableSld(host).replace(/[^a-z0-9]+/g, "");
+    if (sld && sld === b) return true;
+    if (host.replace(/[^a-z0-9]+/g, "") === b) return true;
+    return false;
   }
   const plainAnswer = (r) => r && (r.answer_text || r.answer || r.answer_text_markdown || "") || "";
   const mdAnswer = (r) => r && (r.answer_text_markdown || r.answer_text || r.answer || "") || "";
 
+  function normKey(u) {
+    try { const x = new URL(/^https?:/i.test(u) ? u : "https://" + u); return (x.hostname.replace(/^www\./, "") + x.pathname.replace(/\/+$/, "")).toLowerCase(); }
+    catch { return String(u || "").toLowerCase().trim(); }
+  }
   function citationsOf(rec) {
     if (!rec) return [];
+    let src = [];
+    for (const arr of [rec.citations, rec.sources, rec.search_sources, rec.references]) {
+      if (Array.isArray(arr) && arr.length) { src = arr; break; }
+    }
     const out = [], seen = new Set();
-    const push = (c) => {
-      if (!c) return;
+    for (const c of src) {
+      if (!c || c.cited === false) continue;
       const raw = c.url || c.link || "";
       const url = safeUrl(raw);
       const domain = domainOf(url) || (c.domain ? domainOf(c.domain) : "");
-      const key = (raw || domain || c.title || "").toLowerCase().trim();
-      if (!key || seen.has(key)) return;
+      if (!domain && !url) continue;
+      const key = normKey(raw || domain || c.title || "");
+      if (!key || seen.has(key)) continue;
       seen.add(key);
-      out.push({ url, title: c.title || c.name || "", domain, position: out.length + 1 });
-    };
-    for (const arr of [rec.citations, rec.sources, rec.search_sources, rec.references, rec.links_attached]) {
-      if (Array.isArray(arr)) arr.forEach(push);
+      let pos = Number(c.position != null ? c.position : c.rank);
+      if (!Number.isFinite(pos) || pos < 1) pos = out.length + 1;
+      out.push({ url, title: c.title || c.name || "", domain, position: pos });
     }
-    return out;
+    out.sort((a, b) => a.position - b.position);
+    return out.map((c, i) => ({ ...c, position: i + 1 }));
   }
 
   function brandInText(text, brand) {
@@ -403,15 +420,7 @@
   function showErr(msg) { const e = $("err"); e.textContent = msg; e.style.display = "block"; e.scrollIntoView({ behavior: "smooth", block: "center" }); }
   function clearErr() { const e = $("err"); e.style.display = "none"; e.textContent = ""; }
 
-  // ---------- token persistence ----------
-  function loadToken() {
-    const t = localStorage.getItem("bd_token");
-    if (t) { $("token").value = t; $("remember").checked = true; }
-  }
-  function persistToken() {
-    if ($("remember").checked) localStorage.setItem("bd_token", $("token").value.trim());
-    else localStorage.removeItem("bd_token");
-  }
+  // The token is intentionally NOT persisted anywhere (no localStorage, no cookies).
 
   // ---------- chips ----------
   function buildChips() {
@@ -437,8 +446,7 @@
     const country = $("country").value;
     const token = $("token").value.trim();
     if (!prompt) return showErr("Enter the question your buyers ask AI (e.g. “best CRM for startups”).");
-    if (!token) return showErr("Paste your Bright Data API token. It’s sent only to Bright Data and isn’t stored on our servers.");
-    persistToken();
+    if (!token) return showErr("Paste your Bright Data API token. It’s passed straight to Bright Data and isn’t stored anywhere.");
 
     setRunning(true);
     run = { brand, prompt, country, started: Date.now(), engines: {}, timer: null, settled: 0 };
@@ -682,7 +690,7 @@
       <div class="related">${p.related.slice(0,4).map((r)=>`<span class="rp" data-q="${esc(r)}">${esc(r)}</span>`).join("")}</div>` : "";
 
     return `<div class="card ecard">
-      <div class="ec-top"><div class="ec-name">${ICON[eng]} ${LABEL[eng]}${p.model?` <span class="muted mono" style="font-size:12px">${esc(p.model)}</span>`:""}</div>
+      <div class="ec-top"><div class="ec-name">${ICON[eng]} ${LABEL[eng]}</div>
         <div class="ec-tags">${tags.join("")}</div></div>
       <div class="answer">${renderAnswer(md, brand)}<div class="fade"></div></div>
       ${long?`<button class="moreBtn">Read full answer ↓</button>`:""}
@@ -767,7 +775,7 @@
   }
 
   // ---------- wire up ----------
-  buildChips(); loadToken();
+  buildChips();
   $("runBtn").addEventListener("click", startRun);
   $("sampleBtn").addEventListener("click", runSample);
   $("revealBtn").addEventListener("click", () => {

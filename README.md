@@ -32,10 +32,10 @@ Browser ──► Cloudflare Worker (same-origin proxy) ──► Bright Data AI
 ```
 
 1. You enter a **brand**, a **buyer question**, and **your own Bright Data token**.
-2. The Worker fires two async jobs — one against the **ChatGPT** scraper, one
-   against the **Perplexity** scraper — and returns two snapshot IDs.
-3. The page polls until each job is `ready`, then renders the answer, the cited
-   sources, and a verdict.
+2. The Worker calls both scrapers via the synchronous `/scrape` endpoint
+   (`Promise.all`). Perplexity usually returns inline (~30s); ChatGPT often
+   returns a snapshot ID the page then polls (~60–90s).
+3. It renders each engine's answer, the sources it actually cited, and a result.
 4. Export the report as Markdown, JSON, or CSV.
 
 Two Bright Data datasets do the heavy lifting (real browsers, proxy rotation,
@@ -83,8 +83,8 @@ lives in `public/index.html`; the proxy is `src/worker.js`.
 ### Try without a key
 
 Click **"See a real sample"** on the page. It loads `public/sample.json` — a
-real, unedited result for the brand *ROASPIG* and the question *"best AI ad
-creative tools in 2026"*. (Spoiler: ChatGPT lists AdCreative, Pencil and Creatify
+real result (full answer text included) for the brand *ROASPIG* and the question
+*"best AI ad creative tools in 2026"*. (Spoiler: ChatGPT lists AdCreative, Pencil and Creatify
 and Perplexity leads with Predis.ai — neither names or cites ROASPIG.)
 
 ### Raw API example

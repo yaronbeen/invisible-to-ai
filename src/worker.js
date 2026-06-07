@@ -61,11 +61,12 @@ function humanError(data, text, status) {
   return text?.slice(0, 300) || `Bright Data error (HTTP ${status}).`;
 }
 
-async function isRateLimited(env, request) {
+async function rl(env, request, binding) {
   try {
-    if (env && env.CHECK_RL && typeof env.CHECK_RL.limit === "function") {
+    const b = env && env[binding];
+    if (b && typeof b.limit === "function") {
       const ip = request.headers.get("CF-Connecting-IP") || "anon";
-      const { success } = await env.CHECK_RL.limit({ key: ip });
+      const { success } = await b.limit({ key: ip });
       return !success;
     }
   } catch {
@@ -111,7 +112,7 @@ async function handleCheck(request, env) {
   const token = getToken(request);
   if (!token) return json({ error: "Missing Bright Data API token." }, 401);
 
-  if (await isRateLimited(env, request)) {
+  if (await rl(env, request, "CHECK_RL")) {
     return json(
       { error: "Too many checks from your network. Please wait a minute and try again." },
       429,
@@ -162,9 +163,10 @@ async function handleCheck(request, env) {
   });
 }
 
-async function handleStatus(request, url) {
+async function handleStatus(request, url, env) {
   const token = getToken(request);
   if (!token) return json({ error: "Missing Bright Data API token." }, 401);
+  if (await rl(env, request, "POLL_RL")) return json({ error: "Too many requests — please slow down." }, 429, { "Retry-After": "30" });
   const id = url.searchParams.get("id") || "";
   if (!SNAPSHOT_RE.test(id)) return json({ error: "Invalid snapshot id." }, 400);
   try {
@@ -177,9 +179,10 @@ async function handleStatus(request, url) {
   }
 }
 
-async function handleResult(request, url) {
+async function handleResult(request, url, env) {
   const token = getToken(request);
   if (!token) return json({ error: "Missing Bright Data API token." }, 401);
+  if (await rl(env, request, "POLL_RL")) return json({ error: "Too many requests — please slow down." }, 429, { "Retry-After": "30" });
   const id = url.searchParams.get("id") || "";
   if (!SNAPSHOT_RE.test(id)) return json({ error: "Invalid snapshot id." }, 400);
   try {
@@ -204,8 +207,8 @@ export default {
 
     if (url.pathname === "/api/health") return json({ ok: true });
     if (url.pathname === "/api/check" && request.method === "POST") return handleCheck(request, env);
-    if (url.pathname === "/api/status" && request.method === "GET") return handleStatus(request, url);
-    if (url.pathname === "/api/result" && request.method === "GET") return handleResult(request, url);
+    if (url.pathname === "/api/status" && request.method === "GET") return handleStatus(request, url, env);
+    if (url.pathname === "/api/result" && request.method === "GET") return handleResult(request, url, env);
     if (url.pathname.startsWith("/api/")) return json({ error: "Not found." }, 404);
 
     return env.ASSETS.fetch(request);
