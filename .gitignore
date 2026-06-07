@@ -1,0 +1,18 @@
+# dependencies
+node_modules/
+
+# wrangler / cloudflare
+.wrangler/
+.dev.vars
+.dev.vars.*
+
+# secrets — never commit a real token
+.env
+.env.local
+*.token
+
+# os / editor
+.DS_Store
+*.log
+.idea/
+.vscode/

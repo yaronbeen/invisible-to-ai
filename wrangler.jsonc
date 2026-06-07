@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "invisible-to-ai-web",
+  "main": "src/worker.js",
+  "compatibility_date": "2025-09-01",
+
+  // Static front-end (public/index.html) is served directly by Cloudflare.
+  // The Worker only runs for /api/* routes (and unmatched paths).
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application"
+  },
+
+  "observability": {
+    "enabled": true
+  }
+
+  // NOTE: There are deliberately NO secrets here.
+  // This tool is Bring-Your-Own-Key: each visitor pastes their own
+  // Bright Data API token, which is forwarded per-request and never stored.
+}

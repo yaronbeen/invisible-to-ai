@@ -1,0 +1,13 @@
+{
+  "name": "invisible-to-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ask ChatGPT and Perplexity whether they know your brand exists. Live AI brand-visibility checker powered by Bright Data.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.86.0"
+  }
+}
