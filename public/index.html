@@ -54,7 +54,7 @@
     border-radius:var(--radius);padding:13px 15px;font-size:16px;font-family:var(--sans);
     color:var(--fg);outline:none;transition:box-shadow .15s ease}
   .input:focus,select:focus,textarea:focus{box-shadow:var(--shadow) var(--shadow) 0 var(--accent-yellow)}
-  .input::placeholder{color:#a3a3a3}
+  .input::placeholder{color:#6e6e6e}
   label.lab{display:block;font-weight:700;font-size:13px;margin:0 0 7px 2px;letter-spacing:.2px}
   .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;font-size:11px;font-weight:800;
     text-transform:uppercase;letter-spacing:.6px;border:2px solid var(--border);border-radius:7px;background:var(--accent-yellow)}
@@ -89,8 +89,8 @@
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .field{margin-bottom:14px}
   .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px}
-  .chip{font-size:12px;font-weight:600;padding:6px 11px;border:2px solid var(--border);border-radius:20px;
-    background:#fff;cursor:pointer;transition:background .12s,transform .08s}
+  .chip{font:inherit;font-size:12px;font-weight:600;padding:8px 12px;border:2px solid var(--border);border-radius:20px;
+    background:#fff;color:var(--fg);cursor:pointer;transition:background .12s,transform .08s}
   .chip:hover{background:var(--accent-lime);transform:translateY(-1px)}
   .tokenrow{display:flex;gap:10px;align-items:stretch}
   .tokenrow .input{flex:1}
@@ -98,8 +98,6 @@
     font-weight:700;font-size:13px;cursor:pointer;box-shadow:3px 3px 0 var(--border)}
   .keyhint{font-size:12.5px;color:var(--muted);margin:8px 2px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .keyhint a{font-weight:700;text-decoration:underline;text-underline-offset:2px}
-  .remember{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;cursor:pointer;user-select:none}
-  .remember input{width:17px;height:17px;accent-color:var(--accent-coral)}
   .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
   .err{margin-top:14px;padding:13px 15px;border:var(--bw) solid var(--accent-coral);border-radius:var(--radius);
     box-shadow:4px 4px 0 var(--accent-coral);background:#fff5f5;color:#c0392b;font-weight:700;font-size:14px;display:none}
@@ -141,7 +139,7 @@
   .ecard .ec-name{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:900}
   .ec-tags{display:flex;gap:8px;flex-wrap:wrap}
   .tag2{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;padding:4px 9px;border:2px solid var(--border);border-radius:7px}
-  .tag-yes{background:var(--accent-lime)} .tag-no{background:var(--accent-coral);color:#fff} .tag-mid{background:var(--accent-yellow)} .tag-info{background:#fff}
+  .tag-yes{background:var(--accent-lime);color:#173a17} .tag-no{background:var(--accent-coral);color:#3a0d0d} .tag-info{background:#fff;color:var(--fg)}
   .answer{margin-top:14px;font-size:14.5px;line-height:1.6;color:#222;border-left:3px solid var(--border);padding:2px 0 2px 14px;
     max-height:120px;overflow:hidden;position:relative;transition:max-height .3s ease}
   .answer.open{max-height:2000px}
@@ -157,10 +155,11 @@
   .cite .cdom{font-weight:800;font-size:13.5px;font-family:var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .cite .ctitle{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .cite.you{background:var(--accent-lime);box-shadow:3px 3px 0 var(--border)}
-  .cite a.open{font-size:11px;font-weight:800;text-decoration:none;border:2px solid var(--border);border-radius:6px;padding:3px 8px;background:var(--bg)}
+  .cite a.open{font-size:11px;font-weight:800;text-decoration:none;border:2px solid var(--border);border-radius:6px;padding:6px 10px;background:var(--bg)}
+  .cite .youtag{flex:none;font-size:10px;font-weight:800;text-transform:uppercase;border:2px solid var(--border);border-radius:6px;padding:2px 6px;background:#fff}
   .note{margin-top:12px;font-size:13px;color:var(--muted);background:#fbfbf6;border:2px dashed var(--border);border-radius:10px;padding:10px 12px}
   .related{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-  .related .rp{font-size:12px;font-weight:600;padding:6px 11px;border:2px solid var(--border);border-radius:20px;background:#fff;cursor:pointer}
+  .related .rp{font:inherit;font-size:12px;font-weight:600;padding:8px 12px;border:2px solid var(--border);border-radius:20px;background:#fff;color:var(--fg);cursor:pointer}
   .related .rp:hover{background:var(--accent-teal)}
 
   .board{padding:20px;margin-top:16px}
@@ -173,8 +172,14 @@
   footer{margin:48px 0 30px;text-align:center}
   footer .love{font-weight:800;font-size:15px}
   footer .love a{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:2px}
-  footer .pw{margin-top:8px;font-size:12px;color:#9a9a8f}
+  footer .pw{margin-top:8px;font-size:12px;color:#7a7a6f}
   footer .pw a{font-weight:700}
+  footer .indep{margin-top:6px;font-size:11px;color:#9a9a8f}
+  .btn:focus-visible,.chip:focus-visible,.related .rp:focus-visible,.reveal:focus-visible,.input:focus-visible,select:focus-visible,.cite a.open:focus-visible,.moreBtn:focus-visible{outline:3px solid var(--border);outline-offset:3px}
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+    html{scroll-behavior:auto}
+  }
   .costnote{font-size:12px;color:var(--muted);margin:9px 2px 0;line-height:1.5}
   .disclaimer{margin:16px 4px 0;font-size:12px;color:var(--muted);text-align:center;line-height:1.5}
 
@@ -186,6 +191,8 @@
     .panel{padding:18px}
     .actions{flex-direction:column}
     .actions .btn{width:100%}
+    .chip,.related .rp{padding:10px 13px}
+    .cite a.open{padding:8px 11px}
   }
   @media(max-width:380px){
     h1.title{font-size:33px;letter-spacing:-1px}
@@ -197,7 +204,7 @@
 <div class="wrap">
 
   <header class="top">
-    <div class="logo"><span class="dot"></span> invisible<span class="muted">·to·ai</span></div>
+    <div class="logo"><span class="dot" aria-hidden="true"></span> invisible<span class="muted">·to·ai</span></div>
     <a class="badge" href="#check" style="text-decoration:none">👻 visibility check</a>
   </header>
 
@@ -234,7 +241,7 @@
   <section id="check" class="card panel">
     <div class="grid2">
       <div class="field">
-        <label class="lab" for="brand">Your brand</label>
+        <label class="lab" for="brand">Your brand <span class="muted">(required)</span></label>
         <input id="brand" class="input" placeholder="e.g. ROASPIG" autocomplete="off" />
       </div>
       <div class="field">
@@ -259,26 +266,26 @@
     </div>
 
     <div class="field">
-      <label class="lab" for="token">Your Bright Data API token</label>
+      <label class="lab" for="token">Your Bright Data API token <span class="muted">(required)</span></label>
       <div class="tokenrow">
         <input id="token" class="input mono" type="password" placeholder="paste your Bright Data token" autocomplete="off" spellcheck="false" />
-        <button class="reveal" id="revealBtn" type="button" aria-label="show token">show</button>
+        <button class="reveal" id="revealBtn" type="button" aria-pressed="false" aria-label="Show token">show</button>
       </div>
       <div class="keyhint">
-        <span>No token? <a href="https://brightdata.com" target="_blank" rel="noopener">Create a Bright Data account →</a> Bright Data is a web-data vendor; its API powers the live queries.</span>
+        <span>No token? <a href="https://brightdata.com" target="_blank" rel="noopener">Create a Bright Data account →</a> Bright Data is a web data platform; its API runs the live queries.</span>
       </div>
-      <p class="costnote">Each check runs two live queries (ChatGPT + Perplexity) through <b>your own</b> Bright Data account and uses your credits (roughly US$0.003 total). Your token is passed straight to Bright Data through this page and isn’t stored — not on our servers, not in your browser.</p>
+      <p class="costnote">Each check runs two live queries (ChatGPT + Perplexity) through <b>your own</b> Bright Data account and uses your credits (about US$0.003 total — two records on pay-as-you-go). Your token is sent to Bright Data via this page’s server and is not stored or logged — not on our servers, not in your browser.</p>
     </div>
 
     <div class="actions">
       <button class="btn btn-primary btn-lg" id="runBtn">👻 Check my visibility</button>
       <button class="btn btn-ghost btn-lg" id="sampleBtn">See a real sample</button>
     </div>
-    <div class="err" id="err"></div>
+    <div class="err" id="err" role="alert"></div>
   </section>
 
   <!-- RUNNER / SPINNER -->
-  <section class="card runner" id="runner">
+  <section class="card runner" id="runner" aria-hidden="true">
     <div class="runhead">
       <h2>Asking the machines about <span id="runBrand">your brand</span>…</h2>
       <span class="timer" id="timer">0s</span>
@@ -286,23 +293,25 @@
     <div class="engrow">
       <div class="eng" id="engRun-chatgpt">
         <div class="ehead">🤖 ChatGPT</div>
-        <div class="estate"><span class="pulse"></span><span class="etext">queued…</span></div>
+        <div class="estate"><span class="pulse" aria-hidden="true"></span><span class="etext" aria-live="polite">queued…</span></div>
       </div>
       <div class="eng" id="engRun-perplexity">
         <div class="ehead">🔮 Perplexity</div>
-        <div class="estate"><span class="pulse teal"></span><span class="etext">queued…</span></div>
+        <div class="estate"><span class="pulse teal" aria-hidden="true"></span><span class="etext" aria-live="polite">queued…</span></div>
       </div>
     </div>
     <div class="bar"><i id="bar"></i></div>
-    <div class="statusline" id="statusline">Running live queries — Perplexity usually answers in ~30s, ChatGPT in ~60–90s.</div>
+    <div class="statusline" id="statusline" aria-live="polite">Running live queries — Perplexity usually answers in ~30s, ChatGPT in ~60–90s (we’ll keep waiting up to 4 minutes).</div>
+    <div class="runfoot" style="margin-top:14px"><button class="btn btn-ghost" id="cancelBtn">Cancel</button></div>
   </section>
 
   <!-- RESULTS -->
-  <section class="results" id="results"></section>
+  <section class="results" id="results" aria-live="polite"></section>
 
   <footer>
     <div class="love">Built by <a href="https://nofluff.online" target="_blank" rel="noopener">Yaron · nofluff.online</a></div>
-    <div class="pw">Powered by <a href="https://brightdata.com" target="_blank" rel="noopener">Bright&nbsp;Data</a> · you bring your own key — passed straight to Bright Data, we store nothing</div>
+    <div class="pw">Powered by <a href="https://brightdata.com" target="_blank" rel="noopener">Bright&nbsp;Data</a> · you bring your own key — sent to Bright Data, we store nothing</div>
+    <div class="indep">Independent project. Not affiliated with or endorsed by Bright Data, OpenAI, or Perplexity.</div>
   </footer>
 </div>
 
@@ -424,7 +433,7 @@
 
   // ---------- chips ----------
   function buildChips() {
-    $("chips").innerHTML = EXAMPLES.map((e) => `<span class="chip" data-q="${esc(e)}">${esc(e)}</span>`).join("");
+    $("chips").innerHTML = EXAMPLES.map((e) => `<button type="button" class="chip" data-q="${esc(e)}">${esc(e)}</button>`).join("");
     $("chips").querySelectorAll(".chip").forEach((c) =>
       c.addEventListener("click", () => { $("prompt").value = c.dataset.q; $("prompt").focus(); }));
   }
@@ -445,12 +454,13 @@
     const prompt = $("prompt").value.trim();
     const country = $("country").value;
     const token = $("token").value.trim();
+    if (!brand) return showErr("Enter your brand name — that’s the thing we check for.");
     if (!prompt) return showErr("Enter the question your buyers ask AI (e.g. “best CRM for startups”).");
-    if (!token) return showErr("Paste your Bright Data API token. It’s passed straight to Bright Data and isn’t stored anywhere.");
+    if (!token) return showErr("Paste your Bright Data API token. It’s sent to Bright Data and isn’t stored anywhere.");
 
     setRunning(true);
     run = { brand, prompt, country, started: Date.now(), engines: {}, timer: null, settled: 0 };
-    $("runBrand").textContent = brand || "your brand";
+    $("runBrand").textContent = brand;
     startTimer();
 
     const { ok, status, data } = await api("/api/check", {
@@ -512,11 +522,19 @@
     if (run.settled >= ENGINES.length) finalize();
   }
 
+  function cancelRun() {
+    if (!run) return;
+    for (const eng of ENGINES) { const e = run.engines[eng]; if (e && e._t) clearTimeout(e._t); }
+    stopTimer(); run = null;
+    setRunning(false); $("results").style.display = "none"; clearErr();
+  }
+
   // ---------- runner UI ----------
   function setRunning(on) {
     $("runBtn").disabled = on; $("sampleBtn").disabled = on;
     $("runBtn").innerHTML = on ? "running…" : "👻 Check my visibility";
     $("runner").style.display = on ? "block" : "none";
+    $("runner").setAttribute("aria-hidden", on ? "false" : "true");
     if (on) { $("results").style.display = "none"; $("results").innerHTML = ""; $("runner").scrollIntoView({ behavior: "smooth", block: "center" }); }
   }
   function setEngState(eng, kind, text) {
@@ -557,7 +575,6 @@
           mentioned: brandInText(ans, brand),
           citedPos: brandCitedPos(cites, brand),
           related: Array.isArray(e.record.related_prompts) ? e.record.related_prompts : [],
-          model: e.record.model || "",
         };
       } else {
         per[eng] = { ok: false, error: e.error || "failed" };
@@ -600,8 +617,8 @@
     const stats = brand && anyOk ? `
       <div class="stats">
         <div class="card stat"><div class="v">${(per.chatgpt.ok&&per.chatgpt.mentioned)||(per.perplexity.ok&&per.perplexity.mentioned)?"Yes":"No"}</div><div class="k">Named in answer</div></div>
-        <div class="card stat"><div class="v">${anyCited?("#"+Math.min(per.chatgpt.citedPos||99,per.perplexity.citedPos||99)):"—"}</div><div class="k">Best citation</div></div>
-        <div class="card stat"><div class="v">${board.length}</div><div class="k">Other sources cited</div></div>
+        <div class="card stat"><div class="v">${anyCited?("#"+Math.min(per.chatgpt.citedPos||99,per.perplexity.citedPos||99)):"—"}</div><div class="k">Cited at position</div></div>
+        <div class="card stat"><div class="v">${(per.chatgpt.ok?per.chatgpt.cites.length:0)+(per.perplexity.ok?per.perplexity.cites.length:0)}</div><div class="k">Sources cited</div></div>
       </div>` : "";
 
     const boardHtml = board.length ? `
@@ -665,7 +682,7 @@
     const tags = [];
     if (brand) {
       tags.push(p.mentioned ? `<span class="tag2 tag-yes">named ✓</span>` : `<span class="tag2 tag-no">not named</span>`);
-      tags.push(p.citedPos ? `<span class="tag2 tag-yes">cited #${p.citedPos}</span>` : `<span class="tag2 tag-mid">not cited</span>`);
+      tags.push(p.citedPos ? `<span class="tag2 tag-yes">cited #${p.citedPos}</span>` : `<span class="tag2 tag-no">not cited</span>`);
     }
     tags.push(`<span class="tag2 tag-info">${p.cites.length} sources</span>`);
 
@@ -677,9 +694,9 @@
         const you = isYou(c.domain, brand);
         const u = safeUrl(c.url);
         return `<li class="cite ${you?"you":""}"><span class="rank">${c.position}</span>
-          <div class="cmeta"><div class="cdom">${esc(c.domain || domainOf(c.url) || "source")}${you?" — that’s you 🎉":""}</div>
+          <div class="cmeta"><div class="cdom">${esc(c.domain || domainOf(c.url) || "source")}</div>
           ${c.title?`<div class="ctitle">${esc(c.title)}</div>`:""}</div>
-          ${u?`<a class="open" href="${esc(u)}" target="_blank" rel="noopener noreferrer">open ↗</a>`:""}</li>`;
+          ${you?`<span class="youtag">that’s you</span>`:""}${u?`<a class="open" href="${esc(u)}" target="_blank" rel="noopener noreferrer">open ↗</a>`:""}</li>`;
       }).join("")}</ul>` : "";
 
     const noSearchNote = (eng === "chatgpt" && p.cites.length === 0)
@@ -687,7 +704,7 @@
 
     const related = (eng === "perplexity" && p.related.length) ? `
       <div class="citehead">People also ask</div>
-      <div class="related">${p.related.slice(0,4).map((r)=>`<span class="rp" data-q="${esc(r)}">${esc(r)}</span>`).join("")}</div>` : "";
+      <div class="related">${p.related.slice(0,4).map((r)=>`<button type="button" class="rp" data-q="${esc(r)}">${esc(r)}</button>`).join("")}</div>` : "";
 
     return `<div class="card ecard">
       <div class="ec-top"><div class="ec-name">${ICON[eng]} ${LABEL[eng]}</div>
@@ -778,9 +795,14 @@
   buildChips();
   $("runBtn").addEventListener("click", startRun);
   $("sampleBtn").addEventListener("click", runSample);
+  $("cancelBtn").addEventListener("click", cancelRun);
   $("revealBtn").addEventListener("click", () => {
     const t = $("token"); const show = t.type === "password";
-    t.type = show ? "text" : "password"; $("revealBtn").textContent = show ? "hide" : "show";
+    t.type = show ? "text" : "password";
+    const btn = $("revealBtn");
+    btn.textContent = show ? "hide" : "show";
+    btn.setAttribute("aria-pressed", show ? "true" : "false");
+    btn.setAttribute("aria-label", show ? "Hide token" : "Show token");
   });
   $("prompt").addEventListener("keydown", (e) => { if (e.key === "Enter") startRun(); });
   $("brand").addEventListener("keydown", (e) => { if (e.key === "Enter") $("prompt").focus(); });

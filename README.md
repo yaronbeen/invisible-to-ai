@@ -38,8 +38,8 @@ Browser ──► Cloudflare Worker (same-origin proxy) ──► Bright Data AI
 3. It renders each engine's answer, the sources it actually cited, and a result.
 4. Export the report as Markdown, JSON, or CSV.
 
-Two Bright Data datasets do the heavy lifting (real browsers, proxy rotation,
-anti-bot handling — so the AIs answer like they would for a human):
+Two Bright Data datasets run the queries — its AI-Search scrapers return each
+model's answer plus the sources it cited:
 
 | Engine | Dataset ID | Inputs |
 | --- | --- | --- |
@@ -54,15 +54,17 @@ anti-bot handling — so the AIs answer like they would for a human):
 
 Each visitor pastes their **own** Bright Data token in the UI. It's sent on each
 request as `Authorization: Bearer <token>`, forwarded to Bright Data by the
-Worker, and **not stored on our servers** — the Worker keeps no database and
-doesn't log the token. If you tick **"Remember in this browser"**, the token is
-saved only in your browser's `localStorage` on your device; otherwise it isn't
-persisted anywhere. Your key, your credits — each check spends a few cents of
-**your own** Bright Data balance.
+Worker, and **not stored anywhere** — the Worker keeps no database, doesn't log
+the token, and the page does not save it in your browser (no `localStorage`, no
+cookies). Your key, your credits — each check runs two records (ChatGPT +
+Perplexity) at about **US$0.0015 per record** on Bright Data pay-as-you-go.
 
 Why a proxy at all? Bright Data's API doesn't send CORS headers, so a browser
 can't call it directly. The Worker is a thin, stateless relay on the same origin
-as the page, and `POST /api/check` is rate-limited per IP to prevent abuse.
+as the page; the `/api/*` endpoints are rate-limited per IP.
+
+> This is an independent project — not affiliated with or endorsed by Bright Data,
+> OpenAI, or Perplexity.
 
 Create a Bright Data account at [brightdata.com](https://brightdata.com); the API
 token lives in your account settings under *API keys*.
@@ -98,7 +100,8 @@ curl -H "Authorization: Bearer $BRIGHT_DATA_API_TOKEN" \
      "https://api.brightdata.com/datasets/v3/scrape?dataset_id=gd_m7dhdot1vw9a7gc1n&notify=false&include_errors=true"
 ```
 
-For longer jobs (ChatGPT often takes ~90s) use the async pattern this app uses:
+The app itself calls the synchronous `/scrape` endpoint (it returns a `snapshot_id`
+to poll for long ChatGPT jobs). Bright Data also offers a fully async flow:
 `POST /datasets/v3/trigger` → poll `GET /datasets/v3/progress/{id}` →
 download `GET /datasets/v3/snapshot/{id}?format=json`.
 
