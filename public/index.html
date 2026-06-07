@@ -26,7 +26,7 @@
   html{scroll-behavior:smooth}
   body{
     margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);
-    -webkit-font-smoothing:antialiased;line-height:1.5;
+    -webkit-font-smoothing:antialiased;line-height:1.5;overflow-x:hidden;
     background-image:radial-gradient(var(--border) 0.6px,transparent 0.6px);
     background-size:22px 22px;background-position:-11px -11px;
     background-attachment:fixed;
@@ -50,7 +50,7 @@
   .btn-ghost{background:transparent;box-shadow:2px 2px 0 var(--border)}
   .btn-lg{padding:16px 26px;font-size:17px}
   .input,select,textarea{width:100%;background:var(--surface);border:var(--bw) solid var(--border);
-    border-radius:var(--radius);padding:13px 15px;font-size:15px;font-family:var(--sans);
+    border-radius:var(--radius);padding:13px 15px;font-size:16px;font-family:var(--sans);
     color:var(--fg);outline:none;transition:box-shadow .15s ease}
   .input:focus,select:focus,textarea:focus{box-shadow:var(--shadow) var(--shadow) 0 var(--accent-yellow)}
   .input::placeholder{color:#a3a3a3}
@@ -176,9 +176,17 @@
   footer .pw a{font-weight:700}
 
   @media(max-width:680px){
+    .wrap{padding:0 15px}
     .steps,.stats{grid-template-columns:1fr}
     .grid2,.engrow{grid-template-columns:1fr}
     .hero{padding:24px 0 4px}
+    .panel{padding:18px}
+    .actions{flex-direction:column}
+    .actions .btn{width:100%}
+  }
+  @media(max-width:380px){
+    h1.title{font-size:33px;letter-spacing:-1px}
+    .hl{padding:0 10px}
   }
 </style>
 </head>
