@@ -313,7 +313,11 @@
   </footer>
 </div>
 
-<script>
+<script type="module">
+import {
+  esc, safeUrl, domainOf, isYou, plainAnswer, mdAnswer,
+  citationsOf, brandInText, brandCitedPos, renderAnswer, csvCell,
+} from "/lib.js";
 (() => {
   "use strict";
   const $ = (id) => document.getElementById(id);
@@ -336,94 +340,8 @@
   let run = null; // active run state
 
   // ---------- helpers ----------
-  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) =>
-    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-  const safeUrl = (u) => { u = String(u || "").trim(); return /^https?:\/\//i.test(u) ? u : ""; };
-
-  function domainOf(s) {
-    if (!s) return "";
-    try {
-      let u = String(s).trim();
-      if (!/^https?:\/\//i.test(u)) u = "https://" + u;
-      return new URL(u).hostname.replace(/^www\./, "");
-    } catch {
-      return String(s).replace(/^https?:\/\//i, "").replace(/^www\./, "").split("/")[0];
-    }
-  }
-  function registrableSld(domain) {
-    const host = String(domain || "").toLowerCase().replace(/^www\./, "");
-    const L = host.split(".").filter(Boolean);
-    if (L.length < 2) return host;
-    const two = L.slice(-2).join(".");
-    const multi = ["co.uk", "com.au", "co.jp", "co.in", "com.br", "co.nz", "co.za", "com.mx", "co.il", "org.uk", "ne.jp", "or.jp"];
-    if (multi.includes(two) && L.length >= 3) return L[L.length - 3];
-    return L[L.length - 2];
-  }
-  function isYou(domain, brand) {
-    if (!brand) return false;
-    const b = brand.trim().toLowerCase().replace(/[^a-z0-9]+/g, "");
-    if (b.length < 3) return false;
-    const host = String(domain || "").toLowerCase().replace(/^www\./, "");
-    if (!host) return false;
-    const sld = registrableSld(host).replace(/[^a-z0-9]+/g, "");
-    if (sld && sld === b) return true;
-    if (host.replace(/[^a-z0-9]+/g, "") === b) return true;
-    return false;
-  }
-  const plainAnswer = (r) => r && (r.answer_text || r.answer || r.answer_text_markdown || "") || "";
-  const mdAnswer = (r) => r && (r.answer_text_markdown || r.answer_text || r.answer || "") || "";
-
-  function normKey(u) {
-    try { const x = new URL(/^https?:/i.test(u) ? u : "https://" + u); return (x.hostname.replace(/^www\./, "") + x.pathname.replace(/\/+$/, "")).toLowerCase(); }
-    catch { return String(u || "").toLowerCase().trim(); }
-  }
-  function citationsOf(rec) {
-    if (!rec) return [];
-    let src = [];
-    for (const arr of [rec.citations, rec.sources, rec.search_sources, rec.references]) {
-      if (Array.isArray(arr) && arr.length) { src = arr; break; }
-    }
-    const out = [], seen = new Set();
-    for (const c of src) {
-      if (!c || c.cited === false) continue;
-      const raw = c.url || c.link || "";
-      const url = safeUrl(raw);
-      const domain = domainOf(url) || (c.domain ? domainOf(c.domain) : "");
-      if (!domain && !url) continue;
-      const key = normKey(raw || domain || c.title || "");
-      if (!key || seen.has(key)) continue;
-      seen.add(key);
-      let pos = Number(c.position != null ? c.position : c.rank);
-      if (!Number.isFinite(pos) || pos < 1) pos = out.length + 1;
-      out.push({ url, title: c.title || c.name || "", domain, position: pos });
-    }
-    out.sort((a, b) => a.position - b.position);
-    return out.map((c, i) => ({ ...c, position: i + 1 }));
-  }
-
-  function brandInText(text, brand) {
-    if (!brand || !text) return false;
-    const b = brand.trim();
-    if (b.length < 2) return false;
-    const pat = b.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/[\s\-]+/g, "[\\s\\-]*");
-    try { return new RegExp("(^|[^A-Za-z0-9])" + pat + "(?=[^A-Za-z0-9]|$)", "i").test(text); }
-    catch { return text.toLowerCase().includes(b.toLowerCase()); }
-  }
-  function brandCitedPos(cites, brand) {
-    if (!brand) return null;
-    for (const c of cites) { if (isYou(c.domain, brand)) return c.position; }
-    return null;
-  }
-  function renderAnswer(md, brand) {
-    let h = esc(md);
-    if (brand && brand.trim().length >= 2) {
-      const pat = brand.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/[\s\-]+/g, "[\\s\\-]*");
-      try { h = h.replace(new RegExp("(^|[^A-Za-z0-9])(" + pat + ")(?=[^A-Za-z0-9]|$)", "gi"), (m, a, g) => a + "<mark>" + g + "</mark>"); } catch {}
-    }
-    h = h.replace(/^#{1,6}\s*(.+)$/gm, "<strong>$1</strong>").replace(/\*\*([^*\n]{1,160})\*\*/g, "<strong>$1</strong>").replace(/^\s*[-*]\s+/gm, "• ").replace(/[ \t]{3,}/g, "  ").replace(/\n{2,}/g, "<br><br>").replace(/\n/g, "<br>");
-    return h;
-  }
-  function csvCell(x) { let s = String(x == null ? "" : x); if (/^[=+\-@\t\r]/.test(s)) s = "'" + s; return '"' + s.replace(/"/g, '""') + '"'; }
+  // Extracted to /lib.js (imported at the top of this module) so the page and
+  // the test suite (test/lib.test.js) run the exact same code.
 
   // ---------- UI: errors ----------
   function showErr(msg) { const e = $("err"); e.textContent = msg; e.style.display = "block"; e.scrollIntoView({ behavior: SB, block: "center" }); }

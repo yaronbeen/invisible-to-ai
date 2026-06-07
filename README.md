@@ -32,9 +32,11 @@ Browser ──► Cloudflare Worker (same-origin proxy) ──► Bright Data AI
 ```
 
 1. You enter a **brand**, a **buyer question**, and **your own Bright Data token**.
-2. The Worker calls both scrapers via the synchronous `/scrape` endpoint
-   (`Promise.all`). Perplexity usually returns inline (~30s); ChatGPT often
-   returns a snapshot ID the page then polls (~60–90s).
+2. The Worker triggers both scrapers in parallel (`Promise.all`) via the
+   asynchronous `/datasets/v3/trigger` endpoint; each returns a `snapshot_id`
+   immediately (no held-open connection, so no edge timeouts). The page then
+   polls `/api/status` and fetches `/api/result` for each engine independently
+   (typically ~60–90s total).
 3. It renders each engine's answer, the sources it actually cited, and a result.
 4. Export the report as Markdown, JSON, or CSV.
 
@@ -88,19 +90,40 @@ and Perplexity leads with Predis.ai — neither names or cites ROASPIG.)
 
 ### Raw API example
 
-The synchronous endpoint (good for quick scripts):
+The app uses the **asynchronous** flow: trigger a job, get a `snapshot_id` back
+immediately, poll progress, then download the snapshot. (It does this twice —
+once per engine.)
 
 ```bash
+# 1. trigger — returns { "snapshot_id": "sd_..." }
 curl -H "Authorization: Bearer $BRIGHT_DATA_API_TOKEN" \
      -H "Content-Type: application/json" \
      -d '{"input":[{"url":"https://www.perplexity.ai","prompt":"best CRM for startups","country":"US","index":1}]}' \
-     "https://api.brightdata.com/datasets/v3/scrape?dataset_id=gd_m7dhdot1vw9a7gc1n&notify=false&include_errors=true"
+     "https://api.brightdata.com/datasets/v3/trigger?dataset_id=gd_m7dhdot1vw9a7gc1n&notify=false&include_errors=true"
+
+# 2. poll until status is "ready"
+curl -H "Authorization: Bearer $BRIGHT_DATA_API_TOKEN" "https://api.brightdata.com/datasets/v3/progress/sd_..."
+
+# 3. download the record
+curl -H "Authorization: Bearer $BRIGHT_DATA_API_TOKEN" "https://api.brightdata.com/datasets/v3/snapshot/sd_...?format=json"
 ```
 
-The app itself calls the synchronous `/scrape` endpoint (it returns a `snapshot_id`
-to poll for long ChatGPT jobs). Bright Data also offers a fully async flow:
-`POST /datasets/v3/trigger` → poll `GET /datasets/v3/progress/{id}` →
-download `GET /datasets/v3/snapshot/{id}?format=json`.
+---
+
+## Tests
+
+The pure logic (brand matching, citation parsing, CSV/HTML escaping) lives in
+`public/lib.js`, which the page imports as a module **and** the tests import
+directly — so the suite exercises the exact code that ships. The Worker is tested
+by driving its `fetch` handler with mock requests and a stubbed `fetch`/`env`
+(no network, no token needed), including the dual-engine fan-out.
+
+```bash
+npm test        # node --test — zero dependencies
+```
+
+CI runs the same command on every push and pull request
+(`.github/workflows/ci.yml`).
 
 ---
 
@@ -109,10 +132,15 @@ download `GET /datasets/v3/snapshot/{id}?format=json`.
 ```
 invisible-to-ai/
 ├── public/
-│   ├── index.html     # the whole front-end (neo-brutalist, vanilla JS)
+│   ├── index.html     # the front-end (neo-brutalist, vanilla JS module)
+│   ├── lib.js         # pure helpers — shared by the page AND the tests
 │   └── sample.json    # real sample result for the no-key demo
 ├── src/
 │   └── worker.js      # stateless BYOK proxy: /api/check, /api/status, /api/result
+├── test/
+│   ├── lib.test.js    # unit tests for the helpers
+│   └── worker.test.js # integration tests for the Worker (both engines)
+├── .github/workflows/ci.yml
 ├── wrangler.jsonc
 ├── package.json
 └── .env.example
