@@ -300,7 +300,7 @@
       </div>
     </div>
     <div class="bar"><i id="bar"></i></div>
-    <div class="statusline" id="statusline" aria-live="polite">Running live queries — Perplexity usually answers in ~30s, ChatGPT in ~60–90s (we’ll keep waiting up to 4 minutes).</div>
+    <div class="statusline" id="statusline" aria-live="polite">Running live queries — Perplexity usually answers in ~30s, ChatGPT in ~60–90s (we’ll keep waiting up to 5 minutes).</div>
     <div class="runfoot" style="margin-top:14px"><button class="btn btn-ghost" id="cancelBtn">Stop waiting</button> <span class="muted" style="font-size:12px">— stops the timer here; the queries may still finish on Bright Data and use credits.</span></div>
   </section>
 
@@ -323,7 +323,7 @@
   // Honor reduced-motion for JS-driven scrolling (CSS scroll-behavior can't override these).
   const SB = (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) ? "auto" : "smooth";
   const POLL_MS = 4000;
-  const MAX_MS = 4 * 60 * 1000;
+  const MAX_MS = 5 * 60 * 1000;
 
   const EXAMPLES = [
     "best AI ad creative tools in 2026",

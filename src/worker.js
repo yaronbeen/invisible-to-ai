@@ -20,8 +20,8 @@ const DATASETS = {
 };
 
 const BD_BASE = "https://api.brightdata.com";
-const scrapeUrl = (id) =>
-  `${BD_BASE}/datasets/v3/scrape?dataset_id=${id}&notify=false&include_errors=true`;
+const triggerUrl = (id) =>
+  `${BD_BASE}/datasets/v3/trigger?dataset_id=${id}&notify=false&include_errors=true`;
 const progressUrl = (sid) => `${BD_BASE}/datasets/v3/progress/${sid}`;
 const snapshotUrl = (sid) => `${BD_BASE}/datasets/v3/snapshot/${sid}?format=json`;
 const SNAPSHOT_RE = /^s[dn]_[a-z0-9]+$/i;
@@ -72,34 +72,20 @@ async function rl(env, request, binding) {
   return false;
 }
 
-function looksLikeRecord(rec) {
-  return !!rec && typeof rec === "object" && !Array.isArray(rec) &&
-    ("answer_text" in rec || "answer" in rec || "answer_text_markdown" in rec ||
-     "citations" in rec || "sources" in rec || "search_sources" in rec);
-}
-
-// Sync-first: /scrape returns the data directly for fast jobs (Perplexity ~30s),
-// or a 202 (or a 200 wrapper) + snapshot_id for long jobs (ChatGPT), which the
-// client then polls.
+// Async: trigger the job and return a snapshot_id immediately (no held connection).
+// The client polls /api/status + /api/result per engine. Avoids edge/connection timeouts.
 async function runDataset(datasetId, input, token) {
   try {
-    const r = await fetch(scrapeUrl(datasetId), {
+    const r = await fetch(triggerUrl(datasetId), {
       method: "POST",
       headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
       body: JSON.stringify({ input: [input] }),
     });
     const text = await r.text();
     let data; try { data = JSON.parse(text); } catch { data = { raw: text }; }
-
-    const snapId = (data && !Array.isArray(data) && data.snapshot_id) || null;
-    if ((r.status === 202 || (r.ok && snapId && !looksLikeRecord(data))) && snapId) {
-      return { done: false, snapshot_id: snapId };
-    }
     if (!r.ok) return { error: humanError(data, text, r.status), status: r.status };
-
-    const record = Array.isArray(data) ? data[0] : data;
-    if (!looksLikeRecord(record)) return { error: "Bright Data returned an unexpected response." };
-    return { done: true, record };
+    if (!data || !data.snapshot_id) return { error: "Bright Data did not return a snapshot id." };
+    return { done: false, snapshot_id: data.snapshot_id };
   } catch (e) {
     return { error: e?.message || "Failed to reach Bright Data." };
   }
