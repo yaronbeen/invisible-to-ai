@@ -142,7 +142,7 @@
   .tag-yes{background:var(--accent-lime);color:#173a17} .tag-no{background:var(--accent-coral);color:#3a0d0d} .tag-info{background:#fff;color:var(--fg)}
   .answer{margin-top:14px;font-size:14.5px;line-height:1.6;color:#222;border-left:3px solid var(--border);padding:2px 0 2px 14px;
     max-height:120px;overflow:hidden;position:relative;transition:max-height .3s ease}
-  .answer.open{max-height:2000px}
+  .answer.open{max-height:5000px}
   .answer mark{background:var(--accent-yellow);padding:0 2px;border-radius:3px;font-weight:700}
   .answer .fade{position:absolute;left:0;right:0;bottom:0;height:42px;background:linear-gradient(transparent,#fff)}
   .answer.open .fade{display:none}
@@ -172,9 +172,9 @@
   footer{margin:48px 0 30px;text-align:center}
   footer .love{font-weight:800;font-size:15px}
   footer .love a{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:2px}
-  footer .pw{margin-top:8px;font-size:12px;color:#7a7a6f}
+  footer .pw{margin-top:8px;font-size:12px;color:#545046}
   footer .pw a{font-weight:700}
-  footer .indep{margin-top:6px;font-size:11px;color:#9a9a8f}
+  footer .indep{margin-top:6px;font-size:11px;color:#5f5f54}
   .btn:focus-visible,.chip:focus-visible,.related .rp:focus-visible,.reveal:focus-visible,.input:focus-visible,select:focus-visible,.cite a.open:focus-visible,.moreBtn:focus-visible{outline:3px solid var(--border);outline-offset:3px}
   @media (prefers-reduced-motion: reduce){
     *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
@@ -274,7 +274,7 @@
       <div class="keyhint">
         <span>No token? <a href="https://brightdata.com" target="_blank" rel="noopener">Create a Bright Data account →</a> Bright Data is a web data platform; its API runs the live queries.</span>
       </div>
-      <p class="costnote">Each check runs two live queries (ChatGPT + Perplexity) through <b>your own</b> Bright Data account and uses your credits (about US$0.003 total — two records on pay-as-you-go). Your token is sent to Bright Data via this page’s server and is not stored or logged — not on our servers, not in your browser.</p>
+      <p class="costnote">Each check runs two live queries (ChatGPT + Perplexity) through <b>your own</b> Bright Data account and uses your credits (about US$0.003 total — two records on Bright Data’s pay-as-you-go pricing at the time of writing; check Bright Data for current rates). Your token is sent to Bright Data via this page’s server and is not stored or logged — not on our servers, not in your browser.</p>
     </div>
 
     <div class="actions">
@@ -302,7 +302,7 @@
     </div>
     <div class="bar"><i id="bar"></i></div>
     <div class="statusline" id="statusline" aria-live="polite">Running live queries — Perplexity usually answers in ~30s, ChatGPT in ~60–90s (we’ll keep waiting up to 4 minutes).</div>
-    <div class="runfoot" style="margin-top:14px"><button class="btn btn-ghost" id="cancelBtn">Cancel</button></div>
+    <div class="runfoot" style="margin-top:14px"><button class="btn btn-ghost" id="cancelBtn">Stop waiting</button> <span class="muted" style="font-size:12px">— stops the timer here; the queries may still finish on Bright Data and use credits.</span></div>
   </section>
 
   <!-- RESULTS -->
@@ -322,14 +322,16 @@
   const ENGINES = ["chatgpt", "perplexity"];
   const LABEL = { chatgpt: "ChatGPT", perplexity: "Perplexity" };
   const ICON = { chatgpt: "🤖", perplexity: "🔮" };
+  // Honor reduced-motion for JS-driven scrolling (CSS scroll-behavior can't override these).
+  const SB = (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) ? "auto" : "smooth";
   const POLL_MS = 4000;
   const MAX_MS = 4 * 60 * 1000;
 
   const EXAMPLES = [
     "best AI ad creative tools in 2026",
     "best AI tools for Meta media buying",
-    "best CRM for small business",
-    "recommended cold email tools",
+    "best CRM for startups",
+    "top cold email tools",
     "best no-code automation platforms",
   ];
 
@@ -426,7 +428,7 @@
   function csvCell(x) { let s = String(x == null ? "" : x); if (/^[=+\-@\t\r]/.test(s)) s = "'" + s; return '"' + s.replace(/"/g, '""') + '"'; }
 
   // ---------- UI: errors ----------
-  function showErr(msg) { const e = $("err"); e.textContent = msg; e.style.display = "block"; e.scrollIntoView({ behavior: "smooth", block: "center" }); }
+  function showErr(msg) { const e = $("err"); e.textContent = msg; e.style.display = "block"; e.scrollIntoView({ behavior: SB, block: "center" }); }
   function clearErr() { const e = $("err"); e.style.display = "none"; e.textContent = ""; }
 
   // The token is intentionally NOT persisted anywhere (no localStorage, no cookies).
@@ -535,7 +537,7 @@
     $("runBtn").innerHTML = on ? "running…" : "👻 Check my visibility";
     $("runner").style.display = on ? "block" : "none";
     $("runner").setAttribute("aria-hidden", on ? "false" : "true");
-    if (on) { $("results").style.display = "none"; $("results").innerHTML = ""; $("runner").scrollIntoView({ behavior: "smooth", block: "center" }); }
+    if (on) { $("results").style.display = "none"; $("results").innerHTML = ""; $("runner").scrollIntoView({ behavior: SB, block: "center" }); }
   }
   function setEngState(eng, kind, text) {
     const el = $("engRun-" + eng); if (!el) return;
@@ -658,14 +660,18 @@
       const a = b.previousElementSibling; a.classList.toggle("open");
       b.textContent = a.classList.contains("open") ? "Show less ↑" : "Read full answer ↓";
     }));
+    $("results").querySelectorAll(".answer").forEach((a) => {
+      const b = a.nextElementSibling;
+      if (b && b.classList.contains("moreBtn") && a.scrollHeight > a.clientHeight + 4) b.style.display = "";
+    });
     $("results").querySelectorAll(".related .rp").forEach((c) => c.addEventListener("click", () => {
-      $("prompt").value = c.dataset.q; window.scrollTo({ top: 0, behavior: "smooth" }); $("prompt").focus();
+      $("prompt").value = c.dataset.q; window.scrollTo({ top: 0, behavior: SB }); $("prompt").focus();
     }));
     if (done) {
       $("copyMd") && $("copyMd").addEventListener("click", copyReport);
       $("dlJson") && $("dlJson").addEventListener("click", dlJson);
       $("dlCsv") && $("dlCsv").addEventListener("click", dlCsv);
-      $("again") && $("again").addEventListener("click", () => { $("results").style.display = "none"; window.scrollTo({ top: 0, behavior: "smooth" }); $("brand").focus(); });
+      $("again") && $("again").addEventListener("click", () => { $("results").style.display = "none"; window.scrollTo({ top: 0, behavior: SB }); $("brand").focus(); });
     }
   }
 
@@ -687,7 +693,6 @@
     tags.push(`<span class="tag2 tag-info">${p.cites.length} sources</span>`);
 
     const md = p.answerMd || "(no answer returned)";
-    const long = md.length > 320;
     const citeList = p.cites.length ? `
       <div class="citehead">Sources ${LABEL[eng]} cited</div>
       <ul class="cites">${p.cites.slice(0, 10).map((c) => {
@@ -710,7 +715,7 @@
       <div class="ec-top"><div class="ec-name">${ICON[eng]} ${LABEL[eng]}</div>
         <div class="ec-tags">${tags.join("")}</div></div>
       <div class="answer">${renderAnswer(md, brand)}<div class="fade"></div></div>
-      ${long?`<button class="moreBtn">Read full answer ↓</button>`:""}
+      <button class="moreBtn" style="display:none">Read full answer ↓</button>
       ${noSearchNote}
       ${citeList}
       ${related}
@@ -748,7 +753,7 @@
     }
     L.push(`Note: AI answers vary between runs — this is one live snapshot.`);
     L.push(`---`);
-    L.push(`Generated by invisible-to-ai · built by Yaron (nofluff.online) · powered by Bright Data`);
+    L.push(`Generated by invisible-to-ai · built by Yaron (nofluff.online) · powered by Bright Data · independent project, not affiliated with Bright Data, OpenAI, or Perplexity`);
     return L.join("\n");
   }
   function download(name, text, type) {
@@ -782,12 +787,12 @@
     clearErr();
     try {
       const res = await fetch("/sample.json"); const s = await res.json();
-      run = { brand: s.brand, prompt: s.prompt, country: s.country || "US", started: Date.now(), engines: {}, timer: null, settled: 2, active: 0 };
+      run = { brand: s.brand, prompt: s.prompt, country: s.country || "US", started: Date.now(), engines: {}, timer: null, settled: 2 };
       $("brand").value = s.brand; $("prompt").value = s.prompt;
       for (const eng of ENGINES) run.engines[eng] = { status: "done", record: s.engines[eng] };
       $("runner").style.display = "none";
       renderPartial(true);
-      $("results").scrollIntoView({ behavior: "smooth", block: "start" });
+      $("results").scrollIntoView({ behavior: SB, block: "start" });
     } catch (e) { showErr("Could not load the sample."); }
   }
 

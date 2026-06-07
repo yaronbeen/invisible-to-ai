@@ -13,7 +13,7 @@
   },
 
   "observability": {
-    "enabled": true
+    "enabled": false
   },
 
   // Per-IP rate limiting for POST /api/check (abuse protection).

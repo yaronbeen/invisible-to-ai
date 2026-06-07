@@ -26,14 +26,11 @@ const progressUrl = (sid) => `${BD_BASE}/datasets/v3/progress/${sid}`;
 const snapshotUrl = (sid) => `${BD_BASE}/datasets/v3/snapshot/${sid}?format=json`;
 const SNAPSHOT_RE = /^s[dn]_[a-z0-9]+$/i;
 
+// Same-origin only: the page and /api are served by THIS same Worker, so we emit
+// no cross-origin (CORS) headers — other websites can't drive these endpoints with
+// a visitor's token.
 function corsHeaders(extra = {}) {
-  return {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
-    "Access-Control-Allow-Headers": "authorization,content-type",
-    "Access-Control-Max-Age": "86400",
-    ...extra,
-  };
+  return { ...extra };
 }
 
 function json(data, status = 200, extra = {}) {
