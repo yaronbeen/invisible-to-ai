@@ -1,6 +1,18 @@
 # 👻 invisible-to-ai
 
+[![CI](https://github.com/yaronbeen/bright-data-invisible-to-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/yaronbeen/bright-data-invisible-to-ai/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Live demo](https://img.shields.io/badge/demo-live-brightgreen.svg)](https://invisible-to-ai-web.yaron-been.workers.dev)
+
 **Ask ChatGPT and Perplexity if they know your brand exists — live, in real time.**
+
+### ▶ Try it now: **[invisible-to-ai-web.yaron-been.workers.dev](https://invisible-to-ai-web.yaron-been.workers.dev)**
+
+No install and no sign-up here — bring your own Bright Data key, type your brand
+and a question, and see how **both** engines answer side by side. (Or click
+**"See a real sample"** to view a captured result with no key at all.)
+
+[![The invisible-to-ai interface](docs/screenshot.png)](https://invisible-to-ai-web.yaron-been.workers.dev)
 
 ChatGPT and Perplexity are the new search box. When a buyer asks them
 *"what's the best tool for X?"*, the AI names a handful of brands and cites a
