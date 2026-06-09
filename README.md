@@ -78,7 +78,8 @@ can't call it directly. The Worker is a thin, stateless relay on the same origin
 as the page; the `/api/*` endpoints are rate-limited per IP.
 
 Create a Bright Data account at [brightdata.com](https://brightdata.com); the API
-token lives in your account settings under *API keys*.
+token lives in your account settings under *API keys*. New accounts include free
+trial credit, so you can try this without spending anything.
 
 ---
 
