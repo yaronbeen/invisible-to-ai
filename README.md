@@ -171,6 +171,16 @@ what it retrieves. Full playbook in the
 
 ---
 
+## Need a custom scraper?
+
+If you want to check AI visibility on additional models, or need a different output format, you can build your own scraper with [Bright Data's Scraper Studio](https://brightdata.com/products/scraper-studio). Describe the AI search data you need in plain English, and Scraper Studio generates a production-ready scraper with your exact output schema. It includes self-healing, so when the target platform changes its response format, you describe the fix and push a patch in minutes instead of rewriting parsing logic.
+
+## Free tier
+
+Every Bright Data account comes with 5,000 free credits per month (roughly $7.50 in value). Credits reset on the first of each month, and you can start without a credit card. That is enough to run dozens of brand visibility checks across ChatGPT and Perplexity and decide whether this approach fits your AI monitoring workflow.
+
+---
+
 Built with love by **[Yaron · nofluff.online](https://nofluff.online)** · powered by **Bright Data**.
 
-MIT licensed — do whatever you want with it.
+MIT licensed - do whatever you want with it.
